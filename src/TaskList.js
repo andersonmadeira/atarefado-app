@@ -5,7 +5,7 @@ import InputBox from './InputBox';
 import TaskListItem from './TaskListItem';
 import TaskService from './TaskService';
 
-export default class TaskList extends Component {
+export default class TaskListContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -14,6 +14,14 @@ export default class TaskList extends Component {
     this.state = {
       dataList: dataList
     }
+
+    this._onTasksFiltered = this._onTasksFiltered.bind(this);
+  }
+
+  _onTasksFiltered(tasks) {
+    this.setState({
+      dataList: tasks
+    });
   }
 
   render() {
@@ -24,14 +32,14 @@ export default class TaskList extends Component {
         <FlatList
           data={this.state.dataList}
           renderItem={({ item }) => <TaskListItem task={item} />}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) => item.id}
         />
       );
     }
 
     return (
       <View style={{ flex: 1, marginLeft: 10, marginRight: 10 }}>
-        <InputBox data={Array.from(this.state.dataList)} />
+        <InputBox onTasksFiltered={this._onTasksFiltered} />
         {taskList}
       </View>
     )

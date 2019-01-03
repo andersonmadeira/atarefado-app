@@ -1,16 +1,37 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
+import TaskService from './TaskService';
+import Task from './Task';
 
 export default class InputBox extends Component {
   constructor(props) {
     super(props);
+
+    this._onSubmitText = this._onSubmitText.bind(this);
+    this._onChangeText = this._onChangeText.bind(this);
+  }
+
+  _onSubmitText(event) {
+    let label = event.nativeEvent.text;
+
+    if (label) {
+      TaskService.save(new Task(label));
+      this._onChangeText(label);
+    }
+  }
+
+  _onChangeText(text) {
+    this.props.onTasksFiltered(TaskService.findByLabel(text));
   }
 
   render() {
     return (
-      <TextInput style={styles.mainInput}
-        placeholder='Type to search or add a new task'>
-      </TextInput>
+      <TextInput
+        style={styles.mainInput}
+        onSubmitEditing={this._onSubmitText}
+        onChangeText={this._onChangeText}
+        placeholder='Type to search or add a new task'
+      />
     );
   }
 }

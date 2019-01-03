@@ -1,7 +1,7 @@
 import Realm from 'realm';
 import Task from './Task';
 
-let repository = new Realm({
+let repo = new Realm({
   schema: [{
     name: 'task',
     primaryKey: 'id',
@@ -20,21 +20,26 @@ let repository = new Realm({
 let TaskService = {
   findAll: function (sortBy) {
     if (!sortBy) sortBy = [['completed', false], ['updatedAt', true]];
-    return repository.objects('task').sorted(sortBy);
+    return repo.objects('task').sorted(sortBy);
+  },
+
+  findByLabel: function (label) {
+    let tasks = repo.objects('task').filtered('title contains "'+label+'"');
+    return tasks;
   },
 
   save: function (task) {
-    if (repository.objects('task').filtered("title = '" + task.title + "'").length) return;
+    if (repo.objects('task').filtered("title = '" + task.title + "'").length) return;
 
-    repository.write(() => {
+    repo.write(() => {
       task.updatedAt = new Date();
-      repository.create('task', task);
+      repo.create('task', task);
     })
   },
 
   update: function (task, callback) {
     if (!callback) return;
-    repository.write(() => {
+    repo.write(() => {
       callback();
       task.updatedAt = new Date();
     });
