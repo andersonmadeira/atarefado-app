@@ -1,4 +1,4 @@
-package com.atarefado_rn;
+package com.andersonmadeira.atarefado;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "atarefado_rn";
+        return "andersonmadeira.atarefado";
     }
 }

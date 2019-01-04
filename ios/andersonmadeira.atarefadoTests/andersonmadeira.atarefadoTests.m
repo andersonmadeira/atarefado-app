@@ -14,11 +14,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React Native!"
 
-@interface atarefado_rnTests : XCTestCase
+@interface andersonmadeira.atarefadoTests : XCTestCase
 
 @end
 
-@implementation atarefado_rnTests
+@implementation andersonmadeira.atarefadoTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
