@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, FlatList } from 'react-native';
+import { Text, View, TouchableHighlight, FlatList, AlertAndroid } from 'react-native';
 import Task from './Task';
 import InputBox from './InputBox';
 import TaskListItem from './TaskListItem';
@@ -16,11 +16,22 @@ export default class TaskListContainer extends Component {
     }
 
     this._onTasksFiltered = this._onTasksFiltered.bind(this);
+    this._handleTaskDeletion = this._handleTaskDeletion.bind(this);
   }
 
   _onTasksFiltered(tasks) {
     this.setState({
       dataList: tasks
+    });
+  }
+
+  _handleTaskDeletion(task) {
+    let dataList = this.state.dataList.concat([]);
+    let index = dataList.map((t) => t.id).indexOf(task.id);
+    dataList.splice(index, 1);
+    TaskService.delete(task);
+    this.setState({
+      dataList: dataList
     });
   }
 
@@ -31,7 +42,7 @@ export default class TaskListContainer extends Component {
       taskList = (
         <FlatList
           data={this.state.dataList}
-          renderItem={({ item }) => <TaskListItem task={item} />}
+          renderItem={({ item }) => <TaskListItem task={item} handleTaskDeletion={this._handleTaskDeletion} />}
           keyExtractor={(item, index) => item.id}
         />
       );
