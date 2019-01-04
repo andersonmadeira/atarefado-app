@@ -3,6 +3,7 @@ import { TouchableHighlight, View, Text, TouchableOpacity } from 'react-native';
 import CheckBox from './CheckBox';
 import TaskService from './TaskService';
 import RemoveButton from './RemoveButton';
+import * as Animatable from 'react-native-animatable';
 
 export default class TaskListItem extends Component {
   constructor(props) {
@@ -29,8 +30,17 @@ export default class TaskListItem extends Component {
   }
 
   _onRemovePressed() {
-    this.props.handleTaskDeletion(this.state.task);
+    this.animateRemoval();
   }
+
+  animateRemoval() {
+    this.animatedView.fadeOut(250).then((endState) => {
+      if (endState.finished)
+        this.props.handleTaskDeletion(this.state.task);
+    });
+  }
+
+  handleAnimatedViewRef = ref => this.animatedView = ref;
 
   render() {
     let task = this.state.task;
@@ -38,13 +48,13 @@ export default class TaskListItem extends Component {
     let textDecorationLine = task.completed ? 'line-through' : 'none';
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 6, paddingBottom: 6, backgroundColor: "#F8F8F8", borderBottomWidth: 1, borderColor: '#eee' }}>
+        <Animatable.View ref={this.handleAnimatedViewRef} animation="fadeIn" style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 6, paddingBottom: 6, backgroundColor: "#F8F8F8", borderBottomWidth: 1, borderColor: '#eee' }}>
           <CheckBox task={task} color={color} onCheckBoxPressed={this._onCheckBoxPressed}></CheckBox>
           <Text style={{ fontSize: 18, color: color, textDecorationLine: textDecorationLine }}>{task.title}</Text>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
             <RemoveButton onRemovePressed={this._onRemovePressed}/>
           </View>
-        </View>
+        </Animatable.View>
     )
   }
 }
