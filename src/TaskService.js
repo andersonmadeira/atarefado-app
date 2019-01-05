@@ -30,12 +30,14 @@ let TaskService = {
   },
 
   save: function (task) {
-    if (repo.objects('task').filtered("title = '" + task.title + "'").length) return;
+    if (repo.objects('task').filtered("title = '" + task.title + "'").length) return null;
 
     repo.write(() => {
       task.updatedAt = new Date();
       repo.create('task', task);
-    })
+    });
+
+    return task;
   },
 
   delete: function (task) {

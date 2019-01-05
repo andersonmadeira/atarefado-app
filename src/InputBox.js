@@ -14,10 +14,20 @@ export default class InputBox extends Component {
   _onSubmitText(event) {
     let label = event.nativeEvent.text;
 
-    if (label) {
-      TaskService.save(new Task(label));
-      this._onChangeText(label);
+    if (label.trim()) {
+      if ( TaskService.save(new Task(label)) !== null ) {
+        this._dismissInput();
+      } else {
+        this._onChangeText(label);
+      }
+    } else {
+      this._dismissInput();
     }
+  }
+
+  _dismissInput() {
+    this.textInput.clear();
+    this._onChangeText('');
   }
 
   _onChangeText(text) {
@@ -27,6 +37,7 @@ export default class InputBox extends Component {
   render() {
     return (
       <TextInput
+        ref={input => this.textInput = input}
         style={styles.mainInput}
         onSubmitEditing={this._onSubmitText}
         onChangeText={this._onChangeText}
