@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import TaskList from './TaskList';
+import AppStatusBar from './AppStatusBar';
 
 export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar
-          backgroundColor="#F8F8F8"
-          barStyle="dark-content"
-        />
+        <AppStatusBar></AppStatusBar>
         <TaskList></TaskList>
       </View>
     );
