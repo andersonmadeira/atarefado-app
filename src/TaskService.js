@@ -25,7 +25,9 @@ let TaskService = {
   },
 
   findByLabel: function (label) {
-    let results = repo.objects('task').filtered('title contains "' + label + '"');
+    let results = repo.objects('task')
+                      .filtered('title contains "' + label + '"')
+                      .sorted([['completed', false], ['updatedAt', true]]);
     return Array.from(results);
   },
 

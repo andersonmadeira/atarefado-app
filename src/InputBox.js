@@ -12,9 +12,9 @@ export default class InputBox extends Component {
   }
 
   _onSubmitText(event) {
-    let label = event.nativeEvent.text;
+    let label = event.nativeEvent.text.trim();
 
-    if (label.trim()) {
+    if (label) {
       if ( TaskService.save(new Task(label)) !== null ) {
         this._dismissInput();
       } else {
@@ -27,11 +27,16 @@ export default class InputBox extends Component {
 
   _dismissInput() {
     this.textInput.clear();
-    this._onChangeText('');
+    this.props.onTasksFiltered(TaskService.findAll());
   }
 
   _onChangeText(text) {
-    this.props.onTasksFiltered(TaskService.findByLabel(text));
+    text = text.trim();
+    if ( text ) {
+      this.props.onTasksFiltered(TaskService.findByLabel(text));
+    } else {
+      this.props.onTasksFiltered(TaskService.findAll());
+    }
   }
 
   render() {
