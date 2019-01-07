@@ -26,13 +26,13 @@ let TaskService = {
 
   findByLabel: function (label) {
     let results = repo.objects('task')
-                      .filtered('title contains "' + label + '"')
+                      .filtered('title contains[c] $0', label)
                       .sorted([['completed', false], ['updatedAt', true]]);
     return Array.from(results);
   },
 
   save: function (task) {
-    if (repo.objects('task').filtered("title = '" + task.title + "'").length) return null;
+    if (repo.objects('task').filtered('title = $0', task.title).length) return null;
 
     repo.write(() => {
       task.updatedAt = new Date();
