@@ -34,7 +34,7 @@ export default class TaskListItem extends Component {
   }
 
   animateRemoval() {
-    this.animatedView.fadeOut(250).then((endState) => {
+    this.animatedView.zoomOut(250).then((endState) => {
       if (endState.finished)
         this.props.handleTaskDeletion(this.state.task);
     });
@@ -48,7 +48,7 @@ export default class TaskListItem extends Component {
     let textDecorationLine = task.completed ? 'line-through' : 'none';
 
     return (
-      <Animatable.View ref={this.handleAnimatedViewRef} animation="fadeIn" style={styles.container}>
+      <Animatable.View ref={this.handleAnimatedViewRef} style={styles.container}>
         <CheckBox task={task} color={color} onCheckBoxPressed={this._onCheckBoxPressed} style={styles.checkBox}></CheckBox>
         <Text style={[styles.text, { color: color, textDecorationLine: textDecorationLine }]}>{task.title}</Text>
         <View style={styles.rightButtons}>
