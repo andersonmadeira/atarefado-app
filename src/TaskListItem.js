@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableHighlight, UIManager, findNodeHandle, View, Text, TouchableOpacity, StyleSheet, UIManager } from 'react-native';
 import CheckBox from './CheckBox';
 import TaskService from './TaskService';
 import RemoveButton from './RemoveButton';
@@ -42,6 +42,16 @@ export default class TaskListItem extends Component {
 
   handleAnimatedViewRef = ref => this.animatedView = ref;
 
+  _onPress() {
+    UIManager.showPopupMenu(
+      findNodeHandle(this.state.)
+    )
+
+    )
+  }
+
+  onText
+
   render() {
     let task = this.state.task;
     let color = task.completed ? '#C5C8C9' : '#000';
@@ -50,10 +60,9 @@ export default class TaskListItem extends Component {
     return (
       <Animatable.View ref={this.handleAnimatedViewRef} style={styles.container}>
         <CheckBox task={task} color={color} onCheckBoxPressed={this._onCheckBoxPressed} style={styles.checkBox}></CheckBox>
-        <Text style={[styles.text, { color: color, textDecorationLine: textDecorationLine }]}>{task.title}</Text>
-        <View style={styles.rightButtons}>
-          <RemoveButton onRemovePressed={this._onRemovePressed} />
-        </View>
+        <TouchableHighlight style={styles.touchable} onPress={this._onPress}>
+          <Text ref={this.onRef} style={[styles.text, { color: color, textDecorationLine: textDecorationLine }]}>{task.title}</Text>
+        </TouchableHighlight>
       </Animatable.View>
     )
   }
@@ -71,10 +80,12 @@ const styles = StyleSheet.create({
   },
   checkBox: {
   },
-  text: {
+  touchable: {
     flex: 1,
-    fontSize: 18,
     paddingRight: 5,
+  },
+  text: {
+    fontSize: 18,
   },
   rightButtons: {
     flexDirection: 'row',
