@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TaskList from './TaskList';
 import AppStatusBar from './AppStatusBar';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export default class App extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <AppStatusBar></AppStatusBar>
-        <TaskList></TaskList>
-      </View>
+      <MenuProvider>
+        <View style={styles.container}>
+          <AppStatusBar></AppStatusBar>
+          <TaskList></TaskList>
+        </View>
+      </MenuProvider>
     );
   }
 }

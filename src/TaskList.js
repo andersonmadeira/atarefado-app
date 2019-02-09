@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, FlatList, AlertAndroid } from 'react-native';
-import Task from './Task';
+import { View, FlatList } from 'react-native';
 import InputBox from './InputBox';
 import TaskListItem from './TaskListItem';
 import TaskService from './TaskService';
@@ -17,14 +16,22 @@ export default class TaskListContainer extends Component {
 
     this._onTasksFiltered = this._onTasksFiltered.bind(this);
     this._handleRemove = this._handleRemove.bind(this);
-    this._handleEdit = this._handleEdit.bind(this);
-    this._handleDetails = this._handleDetails.bind(this);
+    this._onPress = this._onPress.bind(this);
+    this._onLongPress = this._onLongPress.bind(this);
   }
 
   _onTasksFiltered(tasks) {
     this.setState({
       dataList: tasks
     });
+  }
+
+  _onPress() {
+    alert('pressed');
+  }
+
+  _onLongPress() {
+    alert('long pressed');
   }
 
   _handleRemove(task) {
@@ -37,14 +44,6 @@ export default class TaskListContainer extends Component {
     });
   }
 
-  _handleEdit(task) {
-    alert('Editing ' + task.name);
-  }
-
-  _handleDetails(task) {
-    alert('Details of ' + task.name);
-  }
-
   render() {
     let taskList = (<View></View>);
 
@@ -52,7 +51,8 @@ export default class TaskListContainer extends Component {
       taskList = (
         <FlatList
           data={this.state.dataList}
-          renderItem={({ item }) => <TaskListItem task={item} handleRemove={this._handleRemove} handleEdit={this._handleEdit} handleDetails={this._handleDetails} />}
+          renderItem={
+            ({ item }) => <TaskListItem task={item} onPress={this._onPress} onLongPress={this._onLongPress} />}
           keyExtractor={(item, index) => item.id}
         />
       );
